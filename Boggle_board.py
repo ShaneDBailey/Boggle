@@ -102,4 +102,6 @@ class BoggleBoard():
 if __name__ == "__main__":
 
     game = BoggleBoard()
+    #game.print_board()
     game.print_words_onboard()
+    #input()
