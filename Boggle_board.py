@@ -1,6 +1,7 @@
 import random
 from collections import defaultdict
 import Constants
+import time
 
 class TrieNode:
     def __init__(self):
@@ -91,17 +92,71 @@ class BoggleBoard():
                 print() 
             print()  
 
-    def print_board(self):
+    def print_word_onboard(self,word):
+        print(word)
+        highlight = self.valid_word_list[word]
+        for i, row in enumerate(self.board):
+            for j, letter in enumerate(row):
+                if highlight[i][j]:
+                    print("\033[92m" + letter + "\033[0m", end=" ")  # Highlight in green
+                else:
+                    print(letter, end=" ")
+            print() 
+        print() 
+
+    def print_valid_words(self):
         words = list(game.valid_word_list.keys())
         print(", ".join(words))
+
+    def print_board(self):
         print("Boggle Board:")
         for row in self.board:
             print(row)
     
+    def find_word(self, word):
+        #if word is in valid word_list
+        if word in self.valid_word_list:
+            self.print_word_onboard(word)
+            return True
+        else:
+            print("word could not be made")
+            return False
+    
+
+class Player():
+    def __init__(self):
+        self.words_found = {}
 
 if __name__ == "__main__":
 
     game = BoggleBoard()
-    #game.print_board()
-    game.print_words_onboard()
-    #input()
+    player1 = Player()
+    
+    start_time = time.time()
+    end_time = start_time + 120  
+
+    while time.time() < end_time:
+        game.print_board()
+        game.print_valid_words()
+        game.print_words_onboard()
+        word = input("Player 1, enter a word: ").strip().upper()
+        if word not in player1.words_found:
+            if game.find_word(word):
+                player1.words_found[word] = True
+        else:
+            print("Word already found")
+
+"""
+    while(True):
+        choice = input("Enter a command or type help for more info: ")
+        if(choice.split(" ")[0] == "new"):
+            #create a new boggle board based on user input
+            pass
+        elif(choice.split(" ")[0] == "print" and choice.split(" ")[1] =="board"):
+            game.print_board()
+        elif(choice.split(" ")[0] == "print" and choice.split(" ")[1] =="words"):
+            game.print_valid_words()
+        elif(choice.split(" ")[0] == "find"):
+            game.find_word(choice.split(" ")[1])
+
+"""
